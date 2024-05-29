@@ -8,11 +8,11 @@ console.log("Hello World!")
 // app.get("/", function(req, res){
 //     res.send("Hello Express");
 // });
-
+// Middleware methods
 app.use("/public", express.static(__dirname + "/public"));
 
 app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path} ${req.ip}`);
+    console.log(`${req.method} ${req.path} - ${req.ip}`);
     next();
 });
 
@@ -30,9 +30,20 @@ app.get("/json", (req, res) => {
         message = "Hello json";
     }
     res.json({
-        "message": message
+        "message": message,
     })
 });
+
+
+app.get("/now", (req, res, next) => {
+    req.time = new Date().toString();
+    next();
+}, (req, res) => {
+        res.json({
+            "time": req.time,
+        })
+    }
+);
 
 
 
